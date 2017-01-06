@@ -107,12 +107,30 @@ public class AnagramDictionary {
     }
 
     public List<String> getAnagramsWithOneMoreLetter(String word) {
-        return getAnagrams(word);
+        ArrayList<String> result = new ArrayList<>();
+
+        for(char c = 'a'; c <= 'z'; c++)
+        {
+            String temp sortLetters(word+c);
+            result.addAll(getAnagrams(temp));
+        }
+        return result;
     }
 
     public String pickGoodStarterWord() {
         // TODO
-        // randomly pick a word from the words.txt file
-        return "stop";
+        String word;
+        List<String> anagrams = new ArrayList<>();
+
+        do
+        {
+            word = words.get(Math.abs(random.nextInt()) % words.size());
+            if (word.length() < DEFAULT_WORD_LENGTH || word.length() > MAX_WORD_LENGTH)
+            {
+                continue;
+            }
+            anagrams = getAnagramsWithOneMoreLetter(word);
+        } while (anagrams.size() < MIN_NUM_ANAGRAMS);
+        return word;
     }
 }
